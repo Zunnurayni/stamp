@@ -24,7 +24,7 @@
 
     <q-page-container>
       <q-page>
-        <q-scroll-area ref="chatScroll" class="scroll-area-bordered q-px-none absolute full-width full-height">
+        <q-scroll-area ref="chatScroll" :class="`scroll-area-bordered q-px-none absolute full-width full-height`">
           <anouncement
             class='q-pt-sm'
             name="Stamp Developers"
@@ -52,20 +52,20 @@
       </q-page>
     </q-page-container>
 
-    <!-- Reply box -->
-    <q-footer :class="`${$q.dark.isActive ? 'bg-dark' : 'bg-white'}`">
+    <q-footer :class="bgClass">
       <div
         v-if="!!replyDigest"
         class='reply col q-px-md q-pt-sm'
         ref="replyBox"
       >
+        <!-- Reply box -->
         <div class='row'>
           <div class='col text-weight-bold' :style="`color: ${replyColor};`"> {{ replyName }} </div>
             <div class='col-auto'>
               <q-btn dense flat color="accent" icon="close" @click="setReply(null)" />
             </div>
         </div>
-        <div class='row q-px-sm q-pt-sm text-black'>
+        <div class='row q-px-sm q-pt-sm'>
           <chat-message-text v-if="replyItem.type=='text'" :text="replyItem.text" />
           <chat-message-image v-else-if="replyItem.type=='image'" :image="replyItem.image" />
           <chat-message-stealth v-else-if="replyItem.type=='stealth'" :amount="replyItem.amount" />
@@ -302,6 +302,9 @@ export default {
     },
     contactProfile () {
       return this.getContactVuex(this.address).profile
+    },
+    bgClass () {
+      return this.$q.dark.isActive ? 'bg-dark' : 'bg-white'
     }
   },
   watch: {
@@ -326,9 +329,6 @@ export default {
         this.scrollBottom()
       }
       // TODO: Scroll to last unread
-    },
-    '$q.dark.isActive' (val) {
-      this.bodyBackground = val ? '#121212' : 'lightblue'
     }
   }
 }
